@@ -1,0 +1,222 @@
+1. Big O notation is the upper boundary. In exam pick the reasonable upper boundary. Like 5n+3 has lowest upper boundary of O(n) while the unreasonable would be O(n2). But pick O(n).
+2. note: big O is the upper bound of an algorithm and big omega is the lower bound of an algorithm, meanwhile big theta is the the combination of the both.
+3. We use mathematics to calculate the time complexity of the algo.
+4. Big o: initially the upper bound wont make sense but after n0, we can see the asymtotic.
+-x-x-x--x--x-x-x-x-x--x-x-x-x--x-x-x-x-x--x-x-xx--x-xx--xx--x-x-x-x-x-x--x-x--x
+
+Okt 18, 9:38
+
+1. There will be a seminar, exact date still pending. Important.
+2. Sum function comes with O(n) complexity.
+3. in ipython %timeit  for average of the runnning time of a code. While %time will give a value different everytime.
+
+note: big O is the upper bound of an algorithm and big omega is the lower bound of an algorithm, meanwhile big theta is the the combination of the both.
+
+4. note: 2**(n+2) has omega of 2**n and 2n+100logn is logn
+
+5. Small O: not equal to but less than that (thats the difference between big and small O). like 2n**2 is o(n**3) but not o(n**2) [there is no exercise and not so popular]. Similar to small omega (no equal sign)
+
+6. Oh tilde: for quantum algo. it removes all the logs and keep it simple, to present a complexity in a neat way.
+just remove the logs, and keep the rest. Then tell the complexity
+
+7. Space complexity: ram is limited, need space compl. ,  in prefix_av3 , line3 decides O(n).
+
+While creating algo, we can cache a lot, hence computation will go down but storage will go up. Thereis a tradeoff between time and space complexity. Cache helps us speed up the program. Cache validation is important, we must refresh the caches. Old values of cache must be replaced with the new ones.  
+
+8. Recursion: other way to have a loop in algo. A function calling it self. We do it to the divide and conquer. Sorting divides and solves a smaller on and call itself. its a recursive function.
+	Getting the time complexity of a recursion algo:
+	we use linear search (O(n)) on unsorted data. 
+		a. Binary search: do this on sorted data. works in O(log(n))
+
+[EXAM IMPORTANT]
+Recurense relation: everytime the set becomes half of it. (n/2**k) where is k is the number of times a recurrence or divide and conquer has happen. WOrst case, when will only one element is left which is T(1) = 1. Question: when is n/2**k = 1. solving, n = 2**k. take log on both sides. logn = k log2, k = logn (constant ignored).  or it has base of 2. 
+
+algorithm 7: T(n) = 2 T(n/2) + n
+T(1) = 1 solved on slide 83.
+
+we always have to check when recursion ends, or when T(n/2**k) =1
+
+9. master theorem: neveer works for linear recursion. it gives in theta and not O, hence its better theorem.
+this is better way to solve a recurssion than manually doing it.. In exam, it will be given, solve by mster only unless it is said do it Manually.
+case1: most of the work is done is in subproblem
+case2: subproblem and combining (?)
+case3: root heavy (instead of leaf heavy)
+exceptions: where a is not constant (in slide:104), a must be an integer and not less than one, etc (see page 104)
+
+[left till page 109, went washroom]
+
+exam: 2/3, if we do all, best 2 will be evaluated. chcek the examples from slides for manual calculation.
+
+NOTE: '@' decorator is used in python (LRU cache: it refreshes the cache -> use someone else's code) and for _ in range(n-1), here loop variable is not counted. So that we can remove the useless variables. In real job, we have to take care of the unused variables.
+
+HOMEWORK:
+[practice by hand the slide number 84 or 121 + 85 (linear recursion) + 91 + 92-COME UP WITH RECURRSION RELATIONA ND THEN OPTIMISE IT, BBY FINDING UPPER RECURRESE RELATION, FIND an upper boundary (exam important), 100 or 151 ]
+
+-x--x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+
+1 November 2022
+
+> each process use atleast one thread
+> OS give time slots to threads, depending on priorities
+>  concurrency: multiple process per thread and it can put priority to some process in a thread and put sleep to others
+> in order to do parallelism we need concurrency but not the other way around
+>  parallelism: doing multiple processses in different threads
+
+> multithreading programiing flaws: value can get corrupted as multiple threads are trying to access it at same time and they dont synchronise. Also, deadlock can happen, lock to protect shared resources, making a thread busy for a process. Locks can protect the resources, but deadlock is bad as one thread is locked and others are waiting for it to be released. Program will have a deadlock.
+
+>  Global interpreter lock of python which is build to stop the memory leak and deadlock stops the Python from multithreading
+> Most python libraries are build in C and those are not build for multi threading, hence there exists a lock over the entire interpreter on Python
+> Although we cannot use multithreading but we can do multiprocessing in Python 
+
+> Random forest has n_jobs = -1 does multithreading and creates number of processes or threads in equal number to number of cores available. Each thread of the random forest contains one tree.
+> Parallelism in practice uses joblib for all its parallelism (joblib.Parallel construct)
+
+
+> Entity Relationship (ER model) describes interrelated things of interest in a specific domain of knowledge. 
+> Relational database is a digital database bnased on the relational model of data. Data into tables of rows and columns with a unique key identifying each row
+> SQL : query langauge with database
+>   Key is a unique id to identify a row 
+> Create a new table for entries which are dynamic like employee's salary
+
+> DBMS: internal schema is responsible for storing of data into ram and hard disk which we dont care about. Conceptual schema is what we care about as its responsible for representation.
+> Queries: SELECT col1 col2 FROM table_name; SELECT customer_id, SUM(amount) FROM  payment WHERE amount > 5 GROUP BY customer_id HAVING SUM(amount) >= 160;
+> nested (sub-query) queries: SELECT film_id, title, rental_rate FROM film WHERE rental_rate> ( SELECT AVG(rental_rate) FROM film);
+> merge two tables: SELECT (something) 	FROM customer INNER JOIN payment ON payment.customer_id = customer.customer_id
+
+> import psycopg2 
+
+> Indexes: data structure that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space to maintain the index data structure.
+
+> Database normalization: structuring relational database in accordance with a series of so-called normal forms in order to reduce data redundancy and improve data integrity.  but it will slow down the query at cost of good integrity. 
+
+> Transaction manager: clash of queries. multiple queries are run together in parallel in independent tables (not in use by others)
+> ACID: set of properties of database transactions intended to gaurentee validity even in the event of errors, power failures etc.
+Atomicity: each transaction is a single unit. (can succeed, or fail)
+Consistency: bring database from one valid state to another, maintaining databasse invariants
+Isolation: ensures that concurrent execution of transactions leaves the database in the same state that would have been obtained if the transactions were executed sequentially. 
+Durability: gaurentees that once a transaction has been committed, it will remain committed even in the case of a system failure.
+
+
+HW: create postgres SQL , play sql murder mystery 
+ 
+-x-x-x-x-x-x-x-x-x-x--x-x-x-x-x-x-x-x-x-x--x-x-x
+
+8 November 2022:
+
+> tim burnerslee needs a private jet - made the distributed system
+
+Cloud computing is the distributed systems on steroids.  Instead of huge local inffrastructure of security and storage and power. Let others to the work.
+
+Privacy and fear of shutting the services of competitors . Many companies have core data with them. 
+
+Some sends free engineer , don’t let them in. AWS cheated a german company.
+
+No autonomy if more than half of the nodes fail of internet.
+
+Big data in cloud needs parallelism
+
+Missed how to parallise my code, or use multi threading. Watch old lecture. 
+
+Many casses writing parallel code is not that easy. Google made an abstraction on parallel code, hence they made map reduce. It is a an engine. 
+
+Mapping means applying some function to some data. Each worker (in paper) maps a fnction of split data, makes a dictionary (key value) and then we can assemble everything from all the worker.
+
+Reduce function is just assembling all of it. Fucntional programming has map annd reduce fucntion.  Mapping is applying function to data and reduce is converging all.
+
+Apacche hadoop does the map reduce
+
+Spark does the parallelisation
+
+Cap theorem (impossible to give more than 2 promises) : consistency(every read recieves the most recent write or errror) , availability (nnot halted ) , partition tolerance (connection issue: drop or delay of some data). Bank cannot afford loss of consistency but they are ok with partition tolerance would be more important. 
+
+> Read more about cap theorem, need more insight
+
+> NoSQL : not only sql. 
+
+> CAP theorem change is not propagated so it shows old state of that node, until it gets propagataed and returns. Responsible for comment/post not refreshing immidiately. Not so consitent byt needs availability as we don’t want the app/browser to freeze.
+
+> BASE:  bacially available: hope that eeventually availability. Soft state, propagation is pending.  (its not better, depends all on use case). 
+
+> Speedup throgh GPUs and FPGAs
+
+- GPU
+its just matrix multiplication annd other operations. 
+You can write low-level code in CUDA or use high level APIs that map directly to GPU code, eg. Theano, tensorflow.
+
+Nvidea tesla is not good with video output. Hence not for gaming. 
+
+
+- FPGA
+
+Intel FPGA : application specific integrated circuit (asic). Custom made. Cannot change. Field programmable gate array (field means customer) → has lots of flash cels, integrate in a way and run a custom logic function.
+
+VHDL is the high level language. : not a programming lang, but a hardware description language. Map this into the layout of your FPGA such that flash cells get interconnected and represent the same logic. 
+
+Combining fpga and cpu. Describe the cpu and map it to fpga ? And combine this with ai? A generic cpu which can be customised and cpu learns from the behaboir and change its structure for ultimate computation. 
+
+> EDA: Data quality is important – ML is basically garbage in, garbage out. Data must be checked and cleared out before training. 
+
+Biases in data set: data is not representative. Different sets of training and testing but theey must be equally distributed in both set. Because it will learn on one bias and test on different stuff. And hence thee system will fail. 
+
+Fuzzy logics already run the nuclear power plants
+
+Read prof paper impact of biases in big data
+
+Internal covariance shift – neural network model picks up the bias from the data itself.
+
+-x-x-x-x-x-x-x--x--xx-x--x-x-x--x-x
+
+15.11.2022 online class (missed first 10-15 mins, watch recording)
+
+> when FPGA is shut down, flash cells loose their memory. Hence, we need to re-map the vhdl on fpga circuit.
+
+> Small sample sized problems: (contrary to big data)
+for some problems, we only have a (very) small amount of data available. (a small amount of examples available)
+
+due to this ML model might: give poor results, overfitting (no generalisation), model might not train at all.
+
+linear regression: m training examples having n features. 
+
+{Hypothesis}
+in example: there are 2 parameters (slope and intercept) and one feature
+
+Question: How would you compute weight vector? which approach we will learn the weights? 
+ans: Gradient descent (iterative approach)
+
+Cost function (loss or error function): init with random weights.
+Goal is to reduce this function, so that weights get better and better.
+
+Two ways to optimise weights!:
+1. Gradient descent: iterative approach (loop), taking weights and substracting error from it. converge when weights are optimum. 
+It takes long to converge.
+
+2. Normal equation: not iterative, its a closed form equation (requires no loop) for linear regression, no loop, no learning rate and no feature normalisation. get weights. Y is feature.
+It dont exist for all ML model. but for few.
+It may be slow if X is too big. 
+
+
+> 
+
+-x-x--x-x-xx-x-x-x-x-x--x-xx-x-x-x
+22.11.22    9.46 
+
+> there are different gates in quantum computing unlike OR AND
+> X gate behaves like a NOT gate as it flips in the bloch sphere
+> Hadamard gate creates a superposition where 0 and 1 are equally probable.
+> Measurements are probabilisitic and decoherence happens in real life.
+> Longer the experiment runs, more the decoherence (error, noise).
+> Matrices (gates) need to be unitary. U+.U = U.U+ = I (identity) where + is adjoint (transpose and conjucate).
+> quantum gates are reversible
+> reversible computing is helpful to remove some unnecessary super positions.
+>  decoherence: the more the computation runs, more the noise in it.
+> measurement and decoherence: these two things fuck up the result
+> No cloning theorem, a state cannot be copied.
+> more qubits will add massive decoherence
+> grover: finding input of a function using its output. 
+> Quantum machine learning is much faster on quantum computer
+> They learn from few examles, dont need that much data, due to parallelism.
+> most algos of qc are toy algos.
+
+-x-x-x-x-x--x--x-x-x--x-x-x--x-x--x-x-x-x-x-x
+29.11.22  (guest lecture) [will come in exam]
+

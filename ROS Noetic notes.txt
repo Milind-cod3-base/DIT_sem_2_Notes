@@ -1,0 +1,144 @@
+ROS Noetic notebook for Ubuntu 20.04:
+
+1. roscore initiates Master Node (responsible for helping other nodes find each other, so that they can talk peer to peer)
+2. While creating our first node, since we havent written anything we will use the sample node which comes with ros
+3. Init a node: rosrun <package name> <node name>   - ex. rosrun camera_package lens_node. We are using rosrun rospy_tutorials talker   (it sends hello world constantly)
+4. WHat is a ROS package?
+5. rqt_graph : a tool to create ros graph which will show the nodes and their connections. Everything in oval is Node. Squares are topic.
+6. rosrun rospy_tutorials listener: run this node from the rospy_tutorial package, it will listen from the talker and then refresh the rqt graph
+		in the rqt graph, refresh, we will see talker talking to listener.
+7. rosrun turtlesim turtlesim_node: this will create a node from turtlesim package which will give a UI instead of printing details
+on the screen/terminal. This is just a turtle on the screen. We need to create another node to control it.
+8. Press twice after writing Package name, it will give the pending commands. Ex. rosrun <package name> , press TAB twice.
+9. NODE: a node is an executable program which can be started and stuff can be done.
+10. rosrun turtlesim turtle_teleop_key: this node is responsible for controlling the turtle, by using a topic (cmd_vel: command velocity). CHeck the connection in rqt graph.
+
+x-x-x-x-x-x-x-x-x-x-x-x--x-x-x-x-x-x-x-x-x--x-x-x-x-x-x-x-x-x-x-x-x-x-x--x-x-x-x-x-x-x-x-x--x-x-x-x-x-x-x-x-x--x-x-x-x-x-x-x-x-x-x-x
+
+"Learnt how to use a sample node and monitor the connection between them, now its time to create your own node. But before that, we need to setup our workspace	"
+
+CREATE AND SETUP A CATKIN WORKSPACE
+
+WHY?
+We will work under this workspace, and when it is time to share the work with others, we will share this workspace with others so that others can contribute in the project.
+
+Catkin is a build system, makes the workspace.
+
+HOW?
+
+1. in the home folder, mkdir catkin_ws (conventional name)
+2. cd catkin_ws -> mkdir src (folder for source)
+3. catkin_make (do this inside catkin_ws dir and not src, this will create 2 dirs, build and devel): a new package in src, need to catkin_make again to compile it. To add stuffs in build and devel dir
+4.  Go into the devel dir, there is file called setup.bash, we need to add into the ~/.bashrc in order our code to work. NOTE: only add the source after the global ros source in the bashrc file. We need global ros to init first and then this workspace.
+
+
+-x-x-x-x-x-x-x-x-x--x-x-x---x-x-x-x-x-x-x-x-x-x--x-x-xx---x-x-x-x-x-x-x-x-x-x--x-x-xx---x-x-x-x-x-x-x-x-x-x--x-x-x
+
+CREATE A ROS PACKAGE
+
+"We dont write code directly into the src dir. We first create packages inside the src dir, and then we code inside those packages."
+"Different packages are responsible for different sub-functions / sub-applications of the device"
+
+
+1. catkin_create_pkg my_robot_controller rospy turtlesim : we wish to control the turtle from the turtlesim package using rospy (python library for ros api). Hence after adding package name, we have added the dependencies.
+
+catkin_create_pkg <name of the package> <dependency 1> <dependency 2> = convention: robotname_function, eg. deathwing_controller, deathwing_motion_planner, etc.
+
+dependenices: nodes from one package must communicate with nodes from other packages and hence we will create dependencies
+
+2. In every package, again there is a src folder, which will hold the nodes inside the package. It also has a cmake_lists which is useful for creating binary executables or for compiling c++ codes. It also has a package.xml file which holds all the info about that package in xml format like name and dependencies.
+
+3. as a good habit, compile the package, by writing $catkin_make again. You check the build/ dir again, there will be a new dir named after your package.
+
+-x-x-x-x-x-x-x-x-x--x-x-x---x-x-x-x-x-x-x-x-x-x--x-x-xx---x-x-x-x-x-x-x-x-x-x--x-x-xx---x-x-x-x-x-x-x-x-x-x--x-x-x
+
+WRITING A NODE IN PYTHON
+
+1. Create a new dir inside the package dir, name it scripts/
+2. Inside scripts/, touch my_first_node.py, and make it executable, chmod +x my_first_node.py
+3. Get 3 packages in vscode: python, cmake, ros
+4. Write code in the editor
+5. Start the master node
+6. rosrun <package name> <node>: rosrun my_robot_controller my_first_node.py : this will run the node and execute what you wished.
+7. rosnode list : it will give the list of currently running nodes. rosout is basically related to master node.
+	NOTE: the name of the node will be shown as given in the init method inside the script and not the name of the file.
+8. rosnode kill /<node name> : kills that particular node
+
+-x-x-x-x-x-x-x-x-x--x-x-x---x-x-x-x-x-x-x-x-x-x--x-x-xx---x-x-x-x-x-x-x-x-x-x--x-x-xx---x-x-x-x-x-x-x-x-x-x--x-x-x
+
+ROS TOPIC:
+
+1. rostopic list: gives the topics existing
+2. again initiate listner and talker from rospy_tutorial package. check rostopic 	list.
+3. after rostopic list -> rostopic info /<topic name> (gives names of publishers and subscribers)
+4. rosmsg show <msg type> like rosmsg show std_msgs/String
+5. rostopic echo <topic name> : tells about the message going through the topic
+6. TOPIC is like a highway, multiple nodes can connect to the highway. Multiple subscribers and multiple publishers can connect to it and send & recieve messages through the topic.
+
+-x-x-x-x-x-x-x-x-x--x-x-x---x-x-x-x-x-x-x-x-x-x--x-x-xx---x-x-x-x-x-x-x-x-x-x--x-x-xx---x-x-x-x-x-x-x-x-x-x--x-x-x
+WRITING NODE IN PYTHON:
+
+PUBLISHER NODE:
+1. youtuber is creating a publisher node which makes turtlesim goes in circle. 
+2. NOTE: the first line of python node tells which interpreter to use. #!/usr/bin/env python3 tells the code to choose the interpreter.
+
+SUBSCRIBER NODE:
+1. In making publisher, we were publishing data on cmd_vel topic. This time, we will subscribe/listen on the /turtle1/pose topic. Which currently is published by the turtlesim node but no one is listening.
+2. Using turtlesim package now, but the dependency already exists inside the package.xml file. Hence no need of adding it.
+3. turtlesim.msg contains the class Pose.
+4. Instead of queue size, here callback is used to read the message at the subscriber end.
+5. Instead of creating an active infinite loop by using rate and while loop. We can also use rospy.spin() for creating a passive infinite loop which runs on the separate thread. By passive means, it will come front when some message is recieved. And it will exit the loop when ^C will be used.
+-x-x-x-x-x-x-x-x-x--x-x-x---x-x-x-x-x-x-x-x-x-x--x-x-xx---x-x-x-x-x-x-x-x-x-x--x-x-xx---x-x-x-x-x-x-x-x-x-x--x-x-x
+
+COMBINING PUBLISHER AND SUBSCRIBER IN A CLOSED LOOP SYSTEM:
+
+"Will create nodes containing both publisher and subscriber inside it, hence creating closed loop system"
+"Now we will create one node, which will subscribe on the /turtle1/pose topic to get the position and will give commands to turtle using /turtle1/cmd_vel topic"
+"Turtle will go straight (+x direction) and as its about to reach the border (Security margin), it will slow down and turn left and continue till it hits the security margin 
+
+-x-x-x-x-x-x-x--x-x-x-x-x-x-x-x-x-x--xx-x-x--x-x-x-x-x-x-x-x-x-x-x--x-x-x-x--x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+ROS SERVICE:
+"Topics are good for continous flow of info. Probably one direction. Now we need a client server relationship where one node can ask for a request and get the response"
+
+Creating a server:
+
+1. rosrun rospy_tutorials add_two_ints_server : creates a server. This server is responsible for adding two integers
+2. rosservice list : lists all the servers. There will be 3 pre existing services, but add_two_inits_server is new
+3. rosservice info /add_two_ints : gives the details about the server, including name and arguments
+4. rosservice call /add_two_ints "a: 2 b: 5" : calls the server to do its action, takes in two arguments and adds the numbers.
+5. Multiple clients can connect to the server
+6. rossrv show rospy_tutorials/AddTwoInts:  gives details about the data type of the input and output of a server
+7. Now using pre existing services in the turtlesim: 
+	 rosrun turtlesim turtlesim_node: init the turtle node
+	 rosservice list
+	 rosservice info /turtle1/set_pen: shows the type (it will be useful in next step) and arguments about the server are: rgb width
+	 rossrv show /turtlesim/SetPen : gives the data type of the arguments. Note: there is no response. Means its not important to give a  response
+	 rosrun turtlesim turtle_teleop_key: initiate the turtle simulator
+	 rosservice call /turtle1/set_pen "{r: 255, g: 0, b: 0, width: 4, 'off': 0}" : call the service and give the argument
+	 -> then run the turle and witness the magic. 
+
+" Services dont appear in rqt_graph, dont expect them to appear"
+
+
+Write a ROS client using Python:
+" Earlier we used terminal as a client to talk to the server, this time we will use the python script to talk to the server"
+
+" We will write a client to split the turtle screen in two, and when the turle is on right side, it must print red, when on left side it must make green traces"
+
+1. Make changes in the existing turtle_controller.py
+2. rostopic hz /turtle1/pose : gives the frequency of the publishing node.
+3. We can read and publish at 62hz, its not a problem. But if the service is called at that frequency, it will slow down our system. Service must be only called when needed. And not with high frequency.
+Call the service only when turtle moves on the other half of the screen, and not everytime when the turtle moves. 
+	 
+
+
+-x-x-x-x-x-x-x-x-x--x-x-x---x-x-x-x-x-x-x-x-x-x--x-x-xx---x-x-x-x-x-x-x-x-x-x--x-x-xx---x-x-x-x-x-x-x-x-x-x--x-x-x
+
+Questions:
+
+1. What is a ROS package?
+2. What and how catkin_make compile new code?
+ans: it compiles only C++ codes. Not required for Python nodes.
+3. What is SNAP? snap vs apt?
+ans:  https://phoenixnap.com/kb/snap-vs-apt
+apt checks the list of dependencies of the software before installing and then only install the missing dependencies as they are shared inside the linux. While snap packages of software do not share the dependencies, they come as one package, containing their own dependencies. But it does increase the storage space. Maintaining the snap package is easy as devs has to maintain only one package, while for apt, devs have to check dependies for each linux distro and versions.

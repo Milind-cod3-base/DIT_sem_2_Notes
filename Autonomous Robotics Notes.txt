@@ -1,0 +1,161 @@
+[okt 17, 2:11 pm]
+
+legged locomotive challenges: system stability, mechanical implementaion
+why wheels/caterpillars are simpler to use today/thesedays? more stable, easy to model, only one axis of motion, 
+
+wheels fail at stairs and rough terrains in the robot. Need legs lol.
+
+Locomotion: interaction of vehicle and environment.
+
+Walking robots:
+	has more degree of freedoms, must be controlled. 3 dof are req.
+	alof maneuver collection: video on yt
+	number of possible events: N = (2k-1)!  where k is number of legs
+	
+	The gait is characterised as the distinct sequence of lift and release events of the individual legs.
+	6 legged robot gait: like a spider walks
+	
+	Static 
+		1. 3 legs
+		2. not fall after all joints freeze
+		3. safe, slow efficient
+	
+	Dynamic walking:
+		
+		1. robot wont fall if continously moving
+		2. legs < 3
+		3. fast, efficient.
+		4. Need more power
+		5. Pneumatic piston
+		
+	Biped walking:
+		1. how can we do mathematical modelling of a bipedal mechanism? how to simplify? 
+		   ANS: pendulum. ( a lot of mechanical mechanism can be shown by inverted pendulum -> rocket).
+		2. Cost of transportaion (COt) : E/mgd = P/mgv.
+		3. cornell ranger: just like interstellar's TARS and CASE
+		4. yt: how to engineer a dog -> 12 motors -> PID controller (3 parameters) -> 36 parameters
+		5. COG: center of gait
+		6. Issue: how to switch between gaits?  
+		7. Anybotics yt, elon musk robot yt, honda robots, bigdog overview, 
+		 
+-x--x-x-x-x--x-x-x-x-x-x-x-x-x-x-x---x-x-x-x-x-x--x-x-xx-x--xx-x-x-x-x-x--xx-
+
+1. cd homeworks/
+2. bash bulild_docker.sh (already done)
+3. bash run_docker.sh 
+4. cd turtlebot3_ws
+5. catkin build
+6. source devel/setup.bash
+7. roslaunch turtlebot3_gazebo  turtlebot3_empty_world.launch  (roslaunch packageName filename.launch =  will launch the GUI)
+8. sudo rm -rf homeworks/    (delete the repo)
+9.  mkdir isis -> git clone git@github.com:THD-autonomous-system/homeworks.git
+10. cd homeworks/docker2/ 
+11. bash install_docker.sh -> gedit DockerFile -> put -y (silent mode) in line 95 after apt-get install -y. 
+12. bash build_docker_cuda.sh  -n  (nvidea)
+
+"ilearn has all the commands"
+
+"
+mkdir misis
+git clone git@github.com:THD-autonomous-system/homeworks.git
+cd docker2
+bash install_docker.sh -n (if you have NVIDIA, wothout -n if you use VB)
+bash build_docker_cuda.sh
+bash run_docker.sh -n
+
+IF IT WORKS EXIT THE CONTAINER
+
+locally (outside of the container)
+
+cd misis homeworks
+mkdir -p tb3_ws/src
+cd tb3_ws/src
+git clone git@github.com:ROBOTIS-GIT/turtlebot3.git
+git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
+cd ../..
+
+bash docker2/run_docker.sh -n
+cd misis/homeworks/tb3_ws
+
+catkin build %%IF ERROR THAT COULD NOT FIND CATKIN EXECUTE
+
+%% IF NO ERRORS RUN
+
+source devel/setup.bash
+export TURTLEBOT3_MODEL=burger
+
+roslaunch turtlebot3_gazebo turtlebot3_empty_world.launch
+
+IF GAZEBO OPEN SUCCESS!
+"
+
+What is export in shell? 
+learn more about linux, its processes and commands?
+-x-x-x-x--x-x-x-x-x-x-x--x-x-x-x--x-x-xx-x
+
+left 2-3 classes
+
+-x-x-x-x--x-x-x-x-x-x-x--x-x-x-x--x-x-xx-x
+
+14.11.2022 2.00 pm
+
+>  l_x, l_y. 
+> error angle
+> distance to goal
+> P-controller
+> Uv = Kv * distance2goal * cos(error_angle)
+> Uw = Kw * error_angle
+
+bash:
+cd misis/
+bash docker2/run
+
+
+bash docker2/into_cider.sh
+
+cd misis/
+
+
+how can we define multiple points in the simplest way?
+> if  dist2goal < 5
+				pos_des = Point 2
+elif...
+			
+> (2nd way) Time_step = 20
+if 
+
+-x-x-x-x-x-x-x-x-x-x-x-x-x-x--x-x-x-x-x--x-x-x--x-x-x
+
+Point to Point code explanation:
+
+> Threading.Lock(): sauce: https://www.pythonpool.com/python-threading-lock/
+prevents race condition : last program to execute on that resource will overwrite the previous programs outcome
+Locking is a synchronization(between two or more threads) mechanism. One process can lock the shared resource and make it inaccessible to others if operating on it.
+
+> rospy.Publisher("topic_name", mssg_class, queue_size, latch): sauce: http://wiki.ros.org/rospy/Overview/Publishers%20and%20Subscribers#queue_size:_publish.28.29_behavior_and_queuing 
+
+queue_size : defines the maximum queue size before messages are being dropped. While the serialization will still happen synchronously when publish() is being invoked writing the serialized data to each subscribers connection will happen asynchronously from different threads. As a result only the subscribers having connectivity problems will not receive new messages. 
+
+latching: When a connection is latched, a reference to the last message published is saved and sent to any future subscribers that connect. This is useful for slow-changing or static data like a map. The message is not copied! If you change the message object after publishing, the change message will be sent to future subscribers.
+
+-x-x--x-xx-x-x-x-x-x-x-x-x-x-x-x-x-x-x--x-x-x--x-x--x-xx-
+
+28.11.22 
+
+how to program
+> class
+> setting up traj. parameters
+> def get_point
+ can use geometry_msgs
+	return Pose2D (x, y, theta)
+	if robot stuck, then message type will be Twist (xi, yi, thetai) => here we can check about the stuck message > here xi is velocity in x direction
+	Twist(Vectors3(x,y,z))
+
+> Main Loop
+
+from traj_gen import <name of class>
+
+Work group of 5 people:
+> scripts > short report > presentation {5 slides} (how you solved the task and give a short presentation)
+> read more in sources in ilearn, and in the book "intorduction to autonomous robotics" 
+	

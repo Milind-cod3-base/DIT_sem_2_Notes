@@ -1,0 +1,67 @@
+08.11.2022
+Image processing app using python – project topic
+
+Input output load image
+
+In – picture – one page instructions and packages and requirements, → manual
+
+Project is 40% 
+
+seminar is 10% - any  topic related to computer vision – 20 mins presentation
+
+fpga is like rows and coloumns [ need to learn more]
+
+noise comes from heat from the circuitrar
+
+→ Camera response function f(): Image brightness depends onelectron flux and photon flux. See the formula in slide number 85. 
+
+>- non linear curve in camera response curve because of saturation or brightness is 
+
+> slide 89: exposure bracketing is summing up all (used in iphone 4 initially)
+
+
+-x-x-x-x-x-x-x-x-x--xx-x-x-x-x-x-x-x-x-x--x-x-x-x--x-x-x--xx-x-x--x
+15.11.2022
+
+> a graysclae is a 2d function - we can filter it (changing pixel value without changeing pixel positions) and warping (shifting of pixels but the color info remains same)
+
+high frequency contains edges data while low frequency contains a blurry image with soft colors
+Fourier transform is used to filter them out. 
+ 
+>  warping applications - (pending in slide)
+> transofmations: 
+scaling (each component is multiplied by a scalar ) (unifrom scaling - same scalar for each component)
+matrixes are awesome when it comes to computations x'= ax and y' = b.y
+Shearing: x' = x+ a.y and y' = b.x + y 
+
+rotation: using polar cordinates
+
+Identity matrix clones - question pending
+
+translation: x' = x + t and y' = y + t (matrix representation is not possible)
+
+> Homogenours cordinates: heterogeneous cordinates can be made homo by converting 2d to 3d vector. last 3d vector is the scaling factor. 
+Why are they helpful? because we can do matrix representation of translation using homogenous vectors. 
+1 doesnt matter as you get the same value back , if ti was other value thhen it would be a scaling factor.
+
+a combined matrix of rotation and translation where first four elements of matrix is responsible for rotation and last coloumn vecctor is responsible of translation. 
+
+matrix multiplication order maters as matrix multiplication is non-commutative.
+
+> classificatio of 2d transformation
+similarity: uniform scaling + rotation + translation
+affine transform: unifrom scaling + shearing + rotation + translation 
+
+note: for 3x3, degree of freedoms 8 is maximum.
+Homework: degree of freedoms in different transformations
+
+
+-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x--x-x-x-x-
+
+22.11.22  9.05 am
+
+> why kernel is odd number matrix, so that we can have 1 at the center
+> Laplacian image pyramid is retainable. At each level, retain the residualst
+> Gaussian is not reversible, while in laplacian, original image is reconstrictible. 
+
+-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x--x-x-x-x-
